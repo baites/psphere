@@ -15,7 +15,7 @@ The main module for accessing a vSphere server.
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy
 # of the License at:
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
@@ -82,7 +82,7 @@ class Client(suds.client.Client):
         self.password = password
         url = "https://%s/sdk" % self.server
         if wsdl_location == "local":
-            current_path = os.path.abspath(os.path.dirname(__file__))            
+            current_path = os.path.abspath(os.path.dirname(__file__))
             current_path = current_path.replace('\\', '/')
             if not current_path.startswith('/') :
                 current_path = '/' + current_path
@@ -111,12 +111,12 @@ class Client(suds.client.Client):
         self.set_options(location=url)
         mo_ref = soap.ManagedObjectReference("ServiceInstance",
                                              "ServiceInstance")
-        self.si = ServiceInstance(mo_ref, self) 
+        self.si = ServiceInstance(mo_ref, self)
         try:
             self.sc = self.si.RetrieveServiceContent()
         except URLError, e:
             logger.critical("Failed to connect to %s" % self.server)
-            logger.critical("urllib2 said: %s" % e.reason) 
+            logger.critical("urllib2 said: %s" % e.reason)
             raise
 
         if self._logged_in is False:
@@ -186,7 +186,7 @@ class Client(suds.client.Client):
                 new_result.append(self._unmarshal(item))
         else:
             new_result = self._unmarshal(result)
-            
+
         logger.debug("Finished in invoke.")
         #property = self.find_and_destroy(property)
         #print result
@@ -212,7 +212,7 @@ class Client(suds.client.Client):
             for item in obj:
                 new_list.append(self._marshal(item))
             return new_list
-                
+
         if not isinstance(obj, suds.sudsobject.Object):
             logger.debug("%s is not a sudsobject subclass, skipping", obj)
             return obj
@@ -222,7 +222,7 @@ class Client(suds.client.Client):
             for (name, value) in obj:
                 setattr(obj, name, self._marshal(value))
             return obj
-            
+
         # The obj has nothing that we want to marshal or traverse, return it
         logger.debug("obj doesn't need to be marshalled")
         return obj
@@ -297,10 +297,10 @@ class Client(suds.client.Client):
 #        Notes
 #        -----
 #        A view is a local, static representation of a managed object in
-#        the inventory. The view is not automatically synchronised with 
+#        the inventory. The view is not automatically synchronised with
 #        the server-side object and can therefore be out of date a moment
 #        after it is retrieved.
-#        
+#
 #        Retrieval of only the properties you intend to use -- through
 #        the use of the properties parameter -- is considered best
 #        practise as the properties of some managed objects can be
@@ -308,7 +308,7 @@ class Client(suds.client.Client):
 
     def get_view(self, mo_ref, properties=None):
         """Get a view of a vSphere managed object.
-        
+
         :param mo_ref: The MOR to get a view of
         :type mo_ref: ManagedObjectReference
         :param properties: A list of properties to retrieve from the \
@@ -373,10 +373,10 @@ class Client(suds.client.Client):
             views.append(object_content.obj)
 
         return views
-        
+
     def get_search_filter_spec(self, begin_entity, property_spec):
         """Build a PropertyFilterSpec capable of full inventory traversal.
-        
+
         By specifying all valid traversal specs we are creating a PFS that
         can recursively select any object under the given entity.
 
@@ -428,7 +428,7 @@ class Client(suds.client.Client):
         crhts.name = 'compute_resource_host_traversal_spec'
         crhts.type = 'ComputeResource'
         crhts.path = 'host'
-         
+
         dhts = self.create('TraversalSpec')
         dhts.name = 'datacenter_host_traversal_spec'
         dhts.type = 'Datacenter'
@@ -446,7 +446,7 @@ class Client(suds.client.Client):
         hvts.type = 'HostSystem'
         hvts.path = 'vm'
         hvts.selectSet = [selection_specs[2]]
-      
+
         fts = self.create('TraversalSpec')
         fts.name = 'folder_traversal_spec'
         fts.type = 'Folder'
@@ -468,7 +468,7 @@ class Client(suds.client.Client):
 
     def invoke_task(self, method, **kwargs):
         """Execute a \*_Task method and wait for it to complete.
-        
+
         :param method: The \*_Task method to invoke.
         :type method: str
         :param kwargs: The arguments to pass to the method.
